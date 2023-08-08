@@ -2,11 +2,14 @@
 <div class="container bg-light w-50">
 <h2 class="text-warning">Registration Form</h2>
 <form  method="post" >
+    <div asp-validation-summary="All"></div>
         <div class="form-group mt-2 w-50">
             <input type="text" asp-for="FirstName" required class="form-control pt-20" placeholder="First Name" />
+            <span asp-validation-for="FirstName"></span>
         </div>
         <div class="form-group mt-2 w-50">
             <input type="text" asp-for="LastName" required class="form-control" placeholder="Last Name" />
+              <span asp-validation-for="LastName"></span>
         </div>
         <div class="form-group mt-2 w-50">
         <select  class="form-control" asp-for="Gender" required>
@@ -17,9 +20,10 @@
             </div>
         <div class="form-group mt-2 w-50">
             <input type="email" asp-for="Email" required class="form-control" placeholder="Email" />
+                        <span asp-validation-for="Email"></span>
             </div>
         <div class="mt-2 w-50">
-                <input id="submit" type="submit" required value="Submit" class="btn btn-success " />
+                <input id="submit" type="submit"  value="Submit" class="btn btn-success " />
             </div>
 </form>
 
