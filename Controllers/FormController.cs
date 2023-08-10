@@ -6,10 +6,12 @@ namespace EmailWebApplication.Controllers
 {
     public class FormController : Controller
     {
-        private FormDbContext _db;
-        public FormController(FormDbContext db)
+        private readonly FormDbContext _db;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public FormController(FormDbContext db, IWebHostEnvironment webHostEnvironment )
         {
             _db = db;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -21,7 +23,7 @@ namespace EmailWebApplication.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(EmailForm obj)
+        public IActionResult Create(EmailForm obj, IFormFile? file)
         {
             if(obj.FirstName == obj.Email.ToString())
             {
@@ -34,8 +36,21 @@ namespace EmailWebApplication.Controllers
 
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if(file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(wwwRootPath, @"Images\UserImages");
+
+                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    obj.ImageUrl = @"\Images\UserImages\" + fileName;
+                }
                 _db.EmailForms.Add(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Congratulations!, your registration is successful!";
                 return RedirectToAction("Index");
             }
             return View();
@@ -60,13 +75,47 @@ namespace EmailWebApplication.Controllers
             return View(emailFormDB);
         }
         [HttpPost]
-        public IActionResult Edit(EmailForm obj)
+        public IActionResult Edit(EmailForm obj, IFormFile? file)
         {
            
             if (ModelState.IsValid)
             {
-                _db.EmailForms.Update(obj);
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(wwwRootPath, @"Images\UserImages");
+
+                    if (!string.IsNullOrEmpty(obj.ImageUrl))
+                    {
+                        //delete the old image
+                        var oldImagePath = Path.Combine(wwwRootPath, obj.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath)){
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    obj.ImageUrl = @"\Images\UserImages\" + fileName;
+                }
+                //_db.EmailForms.Update(obj);
+                var objFromDb = _db.EmailForms.FirstOrDefault(u => u.ID == obj.ID);
+                if(objFromDb != null)
+                {
+                    objFromDb.FirstName = obj.FirstName;
+                    objFromDb.LastName = obj.LastName;
+                    objFromDb.Gender = obj.Gender;
+                    objFromDb.Email = obj.Email;
+                    if(obj.ImageUrl != null)
+                    {
+                        objFromDb.ImageUrl = obj.ImageUrl;
+                    }
+                }
                 _db.SaveChanges();
+                TempData["success"] = "Registration is updated successfully!";
                 return RedirectToAction("Index");
             }
             return View();
@@ -100,6 +149,7 @@ namespace EmailWebApplication.Controllers
             }
             _db.EmailForms.Remove(emailFormDB2);
             _db.SaveChanges();
+            TempData["success"] = "Registration is deleted successfully!";
             return RedirectToAction("Index");
 
            

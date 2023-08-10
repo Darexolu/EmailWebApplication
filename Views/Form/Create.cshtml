@@ -1,30 +1,42 @@
 ﻿@model EmailForm
-<div class="container bg-light w-50">
+<div class="container bg-light" style="width: 400px; " >
+    @*<div class="row">
+        <div class="col-12">*@
 <h2 class="text-warning">Registration Form</h2>
-<form  method="post" >
-    <div asp-validation-summary="All"></div>
-        <div class="form-group mt-2 w-50">
+<form  method="post"  enctype="multipart/form-data" >
+@*   <div asp-validation-summary="All"></div>
+*@   
+@* <input asp-for="ID" hidden />*@
+    <input asp-for="ImageUrl" hidden />
+        <div class="form-group mt-2 ">
             <input type="text" asp-for="FirstName" required class="form-control pt-20" placeholder="First Name" />
             <span asp-validation-for="FirstName"></span>
         </div>
-        <div class="form-group mt-2 w-50">
+        <div class="form-group mt-2 ">
             <input type="text" asp-for="LastName" required class="form-control" placeholder="Last Name" />
               <span asp-validation-for="LastName"></span>
         </div>
-        <div class="form-group mt-2 w-50">
-        <select  class="form-control" asp-for="Gender" required>
+        <div class="form-group mt-2 ">
+        <select  class="form-select" asp-for="Gender" required>
             <option value="">Select Gender</option>
             <option value="male">Male</option>
                 <option value="female">Female</option>             
             </select>
             </div>
-        <div class="form-group mt-2 w-50">
+        <div class="form-group mt-2 ">
             <input type="email" asp-for="Email" required class="form-control" placeholder="Email" />
                         <span asp-validation-for="Email"></span>
+            </div>
+            <div class="form-group mt-2 ">
+                    <input type="file" name="file" asp-for="ImageUrl" class="form-control" />
+                    <span asp-validation-for="ImageUrl"></span>
+
             </div>
         <div class="mt-2 w-50">
                 <input id="submit" type="submit"  value="Submit" class="btn btn-success " />
             </div>
+           @* </div>*@
+            @* </div>*@
 </form>
 
 
@@ -38,3 +50,7 @@
     });
 
 </script>*@
+@section scripts{
+    @{
+    <partial name="_ValidationScriptsPartial"/>
+}}
