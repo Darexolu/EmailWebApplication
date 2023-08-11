@@ -1,7 +1,6 @@
 ﻿@model EmailForm
 <div class="container bg-light" style="width: 400px; " >
-    @*<div class="row">
-        <div class="col-12">*@
+   
 <h2 class="text-warning">Registration Form</h2>
 <form  method="post"  enctype="multipart/form-data" >
 @*   <div asp-validation-summary="All"></div>
@@ -27,16 +26,20 @@
             <input type="email" asp-for="Email" required class="form-control" placeholder="Email" />
                         <span asp-validation-for="Email"></span>
             </div>
+        <div class="form-group mt-2 ">
+            <input type="password"  asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password"></span>
+            </div>
+
             <div class="form-group mt-2 ">
-                    <input type="file" name="file" asp-for="ImageUrl" class="form-control" />
+                    <input type="file" name="file" accept="image/jpeg,image/png,image/jpg" asp-for="ImageUrl" class="form-control" />
                     <span asp-validation-for="ImageUrl"></span>
 
             </div>
         <div class="mt-2 w-50">
                 <input id="submit" type="submit"  value="Submit" class="btn btn-success " />
             </div>
-           @* </div>*@
-            @* </div>*@
+          
 </form>
 
 

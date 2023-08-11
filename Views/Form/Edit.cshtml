@@ -8,26 +8,30 @@
 *@       <div class="row">
            <div class="col-10">
                 <div class="form-group mt-2 ">
-                <input type="text" asp-for="FirstName" required class="form-control pt-20" placeholder="First Name" />
+                <input type="text" asp-for="FirstName"  class="form-control pt-20" placeholder="First Name" />
                 <span asp-validation-for="FirstName"></span>
             </div>
             <div class="form-group mt-2 ">
-                <input type="text" asp-for="LastName" required class="form-control" placeholder="Last Name" />
+                <input type="text" asp-for="LastName"  class="form-control" placeholder="Last Name" />
                 <span asp-validation-for="LastName"></span>
             </div>
             <div class="form-group mt-2 ">
-                <select class="form-select" asp-for="Gender" required>
+                <select class="form-select" asp-for="Gender" >
                     <option value="">Select Gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                 </select>
             </div>
             <div class="form-group mt-2 ">
-                <input type="email" asp-for="Email" required class="form-control" placeholder="Email" />
+                <input type="email" asp-for="Email"  class="form-control" placeholder="Email" />
                 <span asp-validation-for="Email"></span>
             </div>
+                <div class="form-group mt-2 ">
+                    <input type="password" asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password"></span>
+                </div>
             <div class="form-group mt-2 ">
-                <input type="file" name="file" asp-for="ImageUrl" required class="form-control"  />
+                <input type="file" name="file" asp-for="ImageUrl"  class="form-control"  />
                     <span asp-validation-for="ImageUrl"></span>
 
             </div>

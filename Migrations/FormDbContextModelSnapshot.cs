@@ -44,6 +44,10 @@ namespace EmailWebApplication.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ID");
 
                     b.ToTable("EmailForms");
@@ -56,7 +60,8 @@ namespace EmailWebApplication.Migrations
                             FirstName = "Dare",
                             Gender = "Male",
                             ImageUrl = "",
-                            LastName = "Seun"
+                            LastName = "Seun",
+                            Password = "1234"
                         });
                 });
 #pragma warning restore 612, 618

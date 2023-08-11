@@ -22,6 +22,16 @@
             <input type="email" disabled asp-for="Email" required class="form-control" placeholder="Email" />
             
         </div>
+        <div class="form-group mt-2 ">
+            <input type="password" disabled asp-for="Password" class="form-control" placeholder="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+
+        <div class="form-group mt-2 ">
+            <input type="file" name="file" disabled asp-for="ImageUrl" class="form-control" />
+            <span asp-validation-for="ImageUrl"></span>
+
+        </div>
         <div class="mt-2 w-50">
             <input id="submit" type="submit" value="Delete" class="btn btn-danger " />
         </div>

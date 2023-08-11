@@ -1,0 +1,18 @@
+﻿@model EmailForm
+<div class="container bg-light" style="width: 800px; background-image: url(@ViewBag.ImageUrl);">
+<div class="navbar d-flex justify-content-end">
+    <ul class="nav-item">
+        <li class="list-unstyled"><a class="nav-link text-danger" asp-area="" asp-controller="Form" asp-action="Index">Logout</a></li>
+    </ul>
+</div>
+<div class="row">  
+    <div class="col-8 mt-5">
+            <h2 class="text-primary">Welcome to your Dashboard,<span class="text-danger">@ViewBag.FirstName!</span></h2>
+    </div>
+    <div class="col-4">
+        <img src="@ViewBag.ImageUrl" width="200" />
+    </div>
+
+
+    </div>
+</div>

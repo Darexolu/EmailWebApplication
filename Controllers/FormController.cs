@@ -1,6 +1,9 @@
 ﻿using EmailWebApplication.Data;
 using EmailWebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.AspNetCore.Http;
+
 
 namespace EmailWebApplication.Controllers
 {
@@ -83,7 +86,7 @@ namespace EmailWebApplication.Controllers
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
                 if (file != null)
                 {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);  
                     string productPath = Path.Combine(wwwRootPath, @"Images\UserImages");
 
                     if (!string.IsNullOrEmpty(obj.ImageUrl))
@@ -109,6 +112,7 @@ namespace EmailWebApplication.Controllers
                     objFromDb.LastName = obj.LastName;
                     objFromDb.Gender = obj.Gender;
                     objFromDb.Email = obj.Email;
+                    objFromDb.Password = obj.Password;
                     if(obj.ImageUrl != null)
                     {
                         objFromDb.ImageUrl = obj.ImageUrl;
@@ -153,6 +157,54 @@ namespace EmailWebApplication.Controllers
             return RedirectToAction("Index");
 
            
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Login(EmailForm obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _db.EmailForms.Where(u => u.Email == obj.Email && u.Password == obj.Password).FirstOrDefault();
+                if(user != null)
+                {
+                    HttpContext.Session.SetString("FirstName", user.FirstName);
+                    HttpContext.Session.SetString("Email", user.Email);
+                    HttpContext.Session.SetString("Password", user.Password);
+                    HttpContext.Session.SetString("ImageUrl", user.ImageUrl);
+
+
+                    return RedirectToAction("Dashboard");
+
+                }
+                else
+                {
+                    ViewBag.msg = "Invalid Email";
+                    return RedirectToAction("Index");
+                }
+
+            }
+            return View();
+          
+        }
+
+        public IActionResult Dashboard()
+        {
+
+            ViewBag.FirstName = HttpContext.Session.GetString("FirstName");
+            ViewBag.ImageUrl = HttpContext.Session.GetString("ImageUrl");
+
+            return View();
+
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("FirstName");
+            return RedirectToAction("Index");
         }
 
 

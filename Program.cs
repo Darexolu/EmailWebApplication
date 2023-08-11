@@ -13,6 +13,13 @@ namespace EmailWebApplication
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<FormDbContext>(Options => Options.UseSqlite
                (builder.Configuration.GetConnectionString("EmailFormCS")));
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             var app = builder.Build();
 
@@ -30,6 +37,8 @@ namespace EmailWebApplication
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",

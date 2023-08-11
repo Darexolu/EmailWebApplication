@@ -16,8 +16,15 @@ namespace EmailWebApplication.Data
         {
             modelBuilder.Entity<EmailForm>().HasData(
                 new EmailForm
-                {ID = 1, FirstName = "Dare", LastName = "Seun",Gender = "Male",Email = "darexolu16@gmail.com",ImageUrl=""
-                });
+                {
+                    ID = 1,
+                    FirstName = "Dare",
+                    LastName = "Seun",
+                    Gender = "Male",
+                    Email = "darexolu16@gmail.com",
+                    ImageUrl = "",
+                    Password = "1234"
+                }) ;
         }
     }
 }
