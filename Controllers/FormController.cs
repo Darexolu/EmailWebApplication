@@ -3,22 +3,22 @@ using EmailWebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.AspNetCore.Http;
-
+using EmailWebApplication.Repositories.IRepository;
 
 namespace EmailWebApplication.Controllers
 {
     public class FormController : Controller
     {
-        private readonly FormDbContext _db;
+        private readonly IEmailFormRepository _emailRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public FormController(FormDbContext db, IWebHostEnvironment webHostEnvironment )
+        public FormController(IEmailFormRepository db, IWebHostEnvironment webHostEnvironment )
         {
-            _db = db;
+            _emailRepo = db;
             _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
-            List<EmailForm> EmailformList = _db.EmailForms.ToList();
+            List<EmailForm> EmailformList = _emailRepo.GetAll().ToList();
             return View(EmailformList);
         }
         public IActionResult Create()
@@ -51,8 +51,8 @@ namespace EmailWebApplication.Controllers
                     }
                     obj.ImageUrl = @"\Images\UserImages\" + fileName;
                 }
-                _db.EmailForms.Add(obj);
-                _db.SaveChanges();
+                _emailRepo.Add(obj);
+                _emailRepo.Save();
                 TempData["success"] = "Congratulations!, your registration is successful!";
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace EmailWebApplication.Controllers
             {
                 return NotFound();
             }
-            EmailForm emailFormDB = _db.EmailForms.Find(id);
+            EmailForm emailFormDB = _emailRepo.Get(u => u.ID == id);
             //EmailForm emailFormDB1 = _db.EmailForms.FirstOrDefault(u=>u.ID==id);
 
             //EmailForm emailFormDB2 = _db.EmailForms.Where(u => u.ID == id).FirstOrDefault();
@@ -104,8 +104,8 @@ namespace EmailWebApplication.Controllers
                     }
                     obj.ImageUrl = @"\Images\UserImages\" + fileName;
                 }
-                //_db.EmailForms.Update(obj);
-                var objFromDb = _db.EmailForms.FirstOrDefault(u => u.ID == obj.ID);
+                //_emailRepo.Update(obj);
+                var objFromDb = _emailRepo.Get(u => u.ID == obj.ID);
                 if(objFromDb != null)
                 {
                     objFromDb.FirstName = obj.FirstName;
@@ -118,7 +118,8 @@ namespace EmailWebApplication.Controllers
                         objFromDb.ImageUrl = obj.ImageUrl;
                     }
                 }
-                _db.SaveChanges();
+                 //_emailRepo.Update(obj);
+                _emailRepo.Save();
                 TempData["success"] = "Registration is updated successfully!";
                 return RedirectToAction("Index");
             }
@@ -133,7 +134,7 @@ namespace EmailWebApplication.Controllers
             {
                 return NotFound();
             }
-            EmailForm? emailFormDB = _db.EmailForms.Find(id);
+            EmailForm? emailFormDB = _emailRepo.Get(u => u.ID == id);
 
             if (emailFormDB == null)
             {
@@ -146,13 +147,13 @@ namespace EmailWebApplication.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            EmailForm? emailFormDB2 = _db.EmailForms.Find(id);
+            EmailForm? emailFormDB2 = _emailRepo.Get(u => u.ID == id);
             if (emailFormDB2 == null)
             {
                 return NotFound();
             }
-            _db.EmailForms.Remove(emailFormDB2);
-            _db.SaveChanges();
+            _emailRepo.Remove(emailFormDB2);
+            _emailRepo.Save();
             TempData["success"] = "Registration is deleted successfully!";
             return RedirectToAction("Index");
 
@@ -168,7 +169,7 @@ namespace EmailWebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _db.EmailForms.Where(u => u.Email == obj.Email && u.Password == obj.Password).FirstOrDefault();
+                var user = _emailRepo.GetAll().Where(u => u.Email == obj.Email && u.Password == obj.Password).FirstOrDefault();
                 if(user != null)
                 {
                     HttpContext.Session.SetString("FirstName", user.FirstName);
@@ -180,10 +181,10 @@ namespace EmailWebApplication.Controllers
                     return RedirectToAction("Dashboard");
 
                 }
-                else
+                else 
                 {
-                    ViewBag.msg = "Invalid Email";
-                    return RedirectToAction("Index");
+                     
+                    ModelState.AddModelError("", "Invalid email or password");                    
                 }
 
             }

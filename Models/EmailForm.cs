@@ -23,3 +23,4 @@ namespace EmailWebApplication.Models
         public string Password { get; set; }
     }
 }
+

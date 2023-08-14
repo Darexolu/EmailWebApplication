@@ -1,4 +1,6 @@
 using EmailWebApplication.Data;
+using EmailWebApplication.Repositories;
+using EmailWebApplication.Repositories.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmailWebApplication
@@ -13,6 +15,7 @@ namespace EmailWebApplication
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<FormDbContext>(Options => Options.UseSqlite
                (builder.Configuration.GetConnectionString("EmailFormCS")));
+            builder.Services.AddScoped<IEmailFormRepository, EmailFormRepository>();
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession(options =>
             {
