@@ -18,8 +18,8 @@ namespace EmailWebApplication.Data
                 new EmailForm
                 {
                     ID = 1,
-                    FirstName = "Dare",
-                    LastName = "Seun",
+                    FullName = "Olushola Damilare",
+                    //LastName = "Seun",
                     Gender = "Male",
                     Email = "darexolu16@gmail.com",
                     ImageUrl = "",

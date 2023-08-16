@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.AspNetCore.Http;
 using EmailWebApplication.Repositories.IRepository;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace EmailWebApplication.Controllers
 {
@@ -27,8 +28,12 @@ namespace EmailWebApplication.Controllers
         }
         [HttpPost]
         public IActionResult Create(EmailForm obj, IFormFile? file)
-        {
-            if(obj.FirstName == obj.Email.ToString())
+        {    //work in progress
+            //BuildEmailTemplate(obj.ID);
+
+                //work in progress
+
+            if(obj.FullName == obj.Email.ToString())
             {
                 ModelState.AddModelError("FirstName", "The First Name cannot exactly match the Email");
             }
@@ -38,7 +43,7 @@ namespace EmailWebApplication.Controllers
             //}
 
             if (ModelState.IsValid)
-            {
+            { 
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
                 if(file != null)
                 {
@@ -60,6 +65,23 @@ namespace EmailWebApplication.Controllers
               
         }
 
+        //work in progress
+
+       //public void BuildEmailTemplate(int id)
+       // {
+       //     string body = System.IO.File.ReadAllText(HostingEnvironment.MapPath("~/EmailTemplate/") + "Text" + ".cshtml");
+       // }
+
+
+
+
+
+
+
+
+
+
+        //work in progress
         public IActionResult Edit(int? id)
         {
             if(id== null || id== 0)
@@ -108,8 +130,8 @@ namespace EmailWebApplication.Controllers
                 var objFromDb = _emailRepo.Get(u => u.ID == obj.ID);
                 if(objFromDb != null)
                 {
-                    objFromDb.FirstName = obj.FirstName;
-                    objFromDb.LastName = obj.LastName;
+                    objFromDb.FullName = obj.FullName;
+                    //objFromDb.LastName = obj.LastName;
                     objFromDb.Gender = obj.Gender;
                     objFromDb.Email = obj.Email;
                     objFromDb.Password = obj.Password;
@@ -172,7 +194,7 @@ namespace EmailWebApplication.Controllers
                 var user = _emailRepo.GetAll().Where(u => u.Email == obj.Email && u.Password == obj.Password).FirstOrDefault();
                 if(user != null)
                 {
-                    HttpContext.Session.SetString("FirstName", user.FirstName);
+                    HttpContext.Session.SetString("FullName", user.FullName);
                     HttpContext.Session.SetString("Email", user.Email);
                     HttpContext.Session.SetString("Password", user.Password);
                     HttpContext.Session.SetString("ImageUrl", user.ImageUrl);
@@ -195,7 +217,7 @@ namespace EmailWebApplication.Controllers
         public IActionResult Dashboard()
         {
 
-            ViewBag.FirstName = HttpContext.Session.GetString("FirstName");
+            ViewBag.FullName = HttpContext.Session.GetString("FullName");
             ViewBag.ImageUrl = HttpContext.Session.GetString("ImageUrl");
 
             return View();
@@ -204,7 +226,7 @@ namespace EmailWebApplication.Controllers
 
         public IActionResult Logout()
         {
-            HttpContext.Session.Remove("FirstName");
+            HttpContext.Session.Remove("FullName");
             return RedirectToAction("Index");
         }
 

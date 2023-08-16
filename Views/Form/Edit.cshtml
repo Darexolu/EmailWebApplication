@@ -8,13 +8,13 @@
 *@       <div class="row">
            <div class="col-10">
                 <div class="form-group mt-2 ">
-                <input type="text" asp-for="FirstName"  class="form-control pt-20" placeholder="First Name" />
-                <span asp-validation-for="FirstName"></span>
+                <input type="text" asp-for="FullName"  class="form-control pt-20" placeholder="Full Name" />
+                <span asp-validation-for="FullName"></span>
             </div>
-            <div class="form-group mt-2 ">
+            @*<div class="form-group mt-2 ">
                 <input type="text" asp-for="LastName"  class="form-control" placeholder="Last Name" />
                 <span asp-validation-for="LastName"></span>
-            </div>
+            </div>*@
             <div class="form-group mt-2 ">
                 <select class="form-select" asp-for="Gender" >
                     <option value="">Select Gender</option>
@@ -31,7 +31,7 @@
                     <span asp-validation-for="Password"></span>
                 </div>
             <div class="form-group mt-2 ">
-                <input type="file" name="file" asp-for="ImageUrl"  class="form-control"  />
+                    <input type="file" name="file" accept=".png, .jpg, .jpeg" asp-for="ImageUrl" class="form-control" />
                     <span asp-validation-for="ImageUrl"></span>
 
             </div>

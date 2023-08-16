@@ -5,12 +5,12 @@
         <div asp-validation-summary="All"></div>
         <input asp-for="ID" hidden />
         <div class="form-group mt-2 w-50">
-            <input type="text"  disabled asp-for="FirstName"  required class="form-control pt-20" placeholder="First Name" />
+            <input type="text"  disabled asp-for="FullName"  required class="form-control pt-20" placeholder="First Name" />
            
         </div>
-        <div class="form-group mt-2 w-50">
+        @*<div class="form-group mt-2 w-50">
             <input type="text" disabled asp-for="LastName" required class="form-control" placeholder="Last Name" />
-        </div>
+        </div>*@
         <div class="form-group mt-2 w-50">
             <select class="form-control" disabled asp-for="Gender" required>
                 <option value="">Select Gender</option>

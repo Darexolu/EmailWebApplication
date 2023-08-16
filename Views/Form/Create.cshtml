@@ -8,13 +8,13 @@
 @* <input asp-for="ID" hidden />*@
     <input asp-for="ImageUrl" hidden />
         <div class="form-group mt-2 ">
-            <input type="text" asp-for="FirstName" required class="form-control pt-20" placeholder="First Name" />
-            <span asp-validation-for="FirstName"></span>
+            <input type="text" asp-for="FullName" required class="form-control pt-20" placeholder="Full Name" />
+            <span asp-validation-for="FullName"></span>
         </div>
-        <div class="form-group mt-2 ">
+        @*<div class="form-group mt-2 ">
             <input type="text" asp-for="LastName" required class="form-control" placeholder="Last Name" />
               <span asp-validation-for="LastName"></span>
-        </div>
+        </div>*@
         <div class="form-group mt-2 ">
         <select  class="form-select" asp-for="Gender" required>
             <option value="">Select Gender</option>
@@ -27,12 +27,12 @@
                         <span asp-validation-for="Email"></span>
             </div>
         <div class="form-group mt-2 ">
-            <input type="password"  asp-for="Password" class="form-control" />
+            <input type="password"  asp-for="Password" class="form-control" placeholder="Password" />
             <span asp-validation-for="Password"></span>
             </div>
 
             <div class="form-group mt-2 ">
-                    <input type="file" name="file" accept="image/jpeg,image/png,image/jpg" asp-for="ImageUrl" class="form-control" />
+            <input type="file" name="file" accept=".png, .jpg, .jpeg" asp-for="ImageUrl" class="form-control" />
                     <span asp-validation-for="ImageUrl"></span>
 
             </div>

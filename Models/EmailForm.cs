@@ -7,12 +7,11 @@ namespace EmailWebApplication.Models
         [Key]
         public int ID { get; set; }
         [Required]
-        [MaxLength(50)]
+        //[MaxLength(50)]
         [ValidateNever]
-        public string FirstName { get; set; }
-        [MaxLength(50)]
-        [ValidateNever]
-        public string LastName { get; set; }
+        public string FullName { get; set; }
+        
+        //public string LastName { get; set; }
         [ValidateNever]
         public string Gender { get; set; }
         //[EmailAddress]

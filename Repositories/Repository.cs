@@ -17,7 +17,6 @@ namespace EmailWebApplication.Repositories
         {
             _db = db;
             this.dbSet = _db.Set<T>();
-            //_d.categories = dbset
         }
         public void Add(T entity)
         {
