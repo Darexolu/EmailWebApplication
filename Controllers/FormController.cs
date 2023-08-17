@@ -28,10 +28,7 @@ namespace EmailWebApplication.Controllers
         }
         [HttpPost]
         public IActionResult Create(EmailForm obj, IFormFile? file)
-        {    //work in progress
-            //BuildEmailTemplate(obj.ID);
-
-                //work in progress
+        {   
 
             if(obj.FullName == obj.Email.ToString())
             {
@@ -45,7 +42,7 @@ namespace EmailWebApplication.Controllers
             if (ModelState.IsValid)
             { 
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
-                if(file != null)
+                if(file != null && IsImageFile(file.FileName))
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string productPath = Path.Combine(wwwRootPath, @"Images\UserImages");
@@ -56,21 +53,23 @@ namespace EmailWebApplication.Controllers
                     }
                     obj.ImageUrl = @"\Images\UserImages\" + fileName;
                 }
-                _emailRepo.Add(obj);
-                _emailRepo.Save();
-                TempData["success"] = "Congratulations!, your registration is successful!";
-                return RedirectToAction("Index");
+                try
+                {
+                    _emailRepo.Add(obj);
+                    _emailRepo.Save();
+                    TempData["success"] = "Congratulations! your registration is successful!";
+                    return RedirectToAction("Index");
+                }
+                catch(Exception)
+                {
+                    TempData["error"] = "Invalid image format";
+                }
             }
             return View();
               
         }
 
-        //work in progress
-
-       //public void BuildEmailTemplate(int id)
-       // {
-       //     string body = System.IO.File.ReadAllText(HostingEnvironment.MapPath("~/EmailTemplate/") + "Text" + ".cshtml");
-       // }
+       
 
 
 
@@ -81,7 +80,30 @@ namespace EmailWebApplication.Controllers
 
 
 
-        //work in progress
+ 
+        [NonAction]
+        private bool IsImageFile(string fileName)
+        {
+            bool isValid = false;
+            string[] fileExtensions = { ".jpg", ".png", ".jpeg", ".JPG", ".PNG", ".JPEG" };
+
+            for (int i = 0; i < fileExtensions.Length; i++)
+            {
+                if (fileName.Contains(fileExtensions[i]))
+                {
+                    isValid = true;
+                }
+            }
+            return isValid;
+        }
+
+
+
+
+
+
+
+
         public IActionResult Edit(int? id)
         {
             if(id== null || id== 0)
@@ -106,7 +128,7 @@ namespace EmailWebApplication.Controllers
             if (ModelState.IsValid)
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
-                if (file != null)
+                if (file != null && IsImageFile(file.FileName))
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);  
                     string productPath = Path.Combine(wwwRootPath, @"Images\UserImages");
@@ -140,10 +162,17 @@ namespace EmailWebApplication.Controllers
                         objFromDb.ImageUrl = obj.ImageUrl;
                     }
                 }
-                 //_emailRepo.Update(obj);
-                _emailRepo.Save();
-                TempData["success"] = "Registration is updated successfully!";
-                return RedirectToAction("Index");
+                //_emailRepo.Update(obj);
+                try
+                {
+                    _emailRepo.Save();
+                    TempData["success"] = "Registration is updated successfully!";
+                    return RedirectToAction("Index");
+                }
+                catch (Exception)
+                {
+                    TempData["error"] = "Invalid image format";
+                }
             }
             return View();
 

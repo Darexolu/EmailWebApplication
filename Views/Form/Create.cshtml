@@ -27,15 +27,16 @@
                         <span asp-validation-for="Email"></span>
             </div>
         <div class="form-group mt-2 ">
-            <input type="password"  asp-for="Password" class="form-control" placeholder="Password" />
+            <input type="password"  asp-for="Password" class="form-control" required placeholder="Password" />
             <span asp-validation-for="Password"></span>
             </div>
 
             <div class="form-group mt-2 ">
-            <input type="file" name="file" accept=".png, .jpg, .jpeg" asp-for="ImageUrl" class="form-control" />
+            <input type="file" name="file" id="fileId" accept=".png, .jpg, .jpeg" required asp-for="ImageUrl" class="form-control" />
                     <span asp-validation-for="ImageUrl"></span>
-
+    
             </div>
+              <div><h4>@TempData["error"]</h4></div>
         <div class="mt-2 w-50">
                 <input id="submit" type="submit"  value="Submit" class="btn btn-success " />
             </div>
@@ -45,15 +46,10 @@
 
 
 </div>
-@*<script type="text/javascript">
-    $(document.ready)(function(){
-        $('#submit').click(function(){
-            alert("Form submitted sucessfully");
-        });
-    });
 
-</script>*@
 @section scripts{
+        <script src="~/js/EmailForm.js"></script>
     @{
     <partial name="_ValidationScriptsPartial"/>
 }}
+
