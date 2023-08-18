@@ -69,33 +69,11 @@ namespace EmailWebApplication.Controllers
               
         }
 
-       
-
-
-
-
-
-
-
 
 
 
  
-        [NonAction]
-        private bool IsImageFile(string fileName)
-        {
-            bool isValid = false;
-            string[] fileExtensions = { ".jpg", ".png", ".jpeg", ".JPG", ".PNG", ".JPEG" };
-
-            for (int i = 0; i < fileExtensions.Length; i++)
-            {
-                if (fileName.Contains(fileExtensions[i]))
-                {
-                    isValid = true;
-                }
-            }
-            return isValid;
-        }
+       
 
 
 
@@ -147,31 +125,34 @@ namespace EmailWebApplication.Controllers
                         file.CopyTo(fileStream);
                     }
                     obj.ImageUrl = @"\Images\UserImages\" + fileName;
-                }
+               }
                 //_emailRepo.Update(obj);
-                var objFromDb = _emailRepo.Get(u => u.ID == obj.ID);
-                if(objFromDb != null)
-                {
-                    objFromDb.FullName = obj.FullName;
-                    //objFromDb.LastName = obj.LastName;
-                    objFromDb.Gender = obj.Gender;
-                    objFromDb.Email = obj.Email;
-                    objFromDb.Password = obj.Password;
-                    if(obj.ImageUrl != null)
-                    {
-                        objFromDb.ImageUrl = obj.ImageUrl;
-                    }
-                }
+                //var objFromDb = _emailRepo.Get(u => u.ID == obj.ID);
+                //if(objFromDb != null)
+                //{
+                //    objFromDb.FullName = obj.FullName;
+                //    //objFromDb.LastName = obj.LastName;
+                //    objFromDb.Gender = obj.Gender;
+                //    objFromDb.Email = obj.Email;
+                //    objFromDb.Password = obj.Password;
+                //    if(obj.ImageUrl != null)
+                //    {
+                //        objFromDb.ImageUrl = obj.ImageUrl;
+                //    }
+                //}
+                
                 //_emailRepo.Update(obj);
                 try
                 {
+                    _emailRepo.Update(obj);
                     _emailRepo.Save();
                     TempData["success"] = "Registration is updated successfully!";
                     return RedirectToAction("Index");
                 }
-                catch (Exception)
+                catch(Exception)
                 {
                     TempData["error"] = "Invalid image format";
+                    return RedirectToAction("Edit");
                 }
             }
             return View();
@@ -257,6 +238,22 @@ namespace EmailWebApplication.Controllers
         {
             HttpContext.Session.Remove("FullName");
             return RedirectToAction("Index");
+        }
+
+        [NonAction]
+        private bool IsImageFile(string fileName)
+        {
+            bool isValid = false;
+            string[] fileExtensions = { ".jpg", ".png", ".jpeg", ".JPG", ".PNG", ".JPEG" };
+
+            for (int i = 0; i < fileExtensions.Length; i++)
+            {
+                if (fileName.Contains(fileExtensions[i]))
+                {
+                    isValid = true;
+                }
+            }
+            return isValid;
         }
 
 
